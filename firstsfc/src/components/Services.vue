@@ -32,6 +32,7 @@
 
 <script>
 export default {
+  name: "Services",
   data() {
     return {
       services: [

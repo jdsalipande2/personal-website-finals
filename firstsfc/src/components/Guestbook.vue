@@ -43,8 +43,6 @@
   </div>
 </template>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <script>
 // Supabase Setup
 const supabase = window.supabase.createClient(

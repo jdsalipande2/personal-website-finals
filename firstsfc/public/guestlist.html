@@ -3,110 +3,111 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Guestlist</title>
+  <title>Janice Salipande | Guest List</title>
   <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    /* Container */
-    .guestlist-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
+    /* Page Styles */
+    body {
+      background: white;
+      color: black;
+      font-family: Arial, sans-serif;
       padding: 20px;
+      text-align: center;
+    }
+    
+    h2 {
+      font-size: 30px; /* Adjust as needed */
     }
 
-    /* Guestlist */
-    .guestlist {
-      background: #000;
-      padding: 20px;
-      border-radius: 10px;
-      width: 100%;
-      max-width: 700px;
-      color: white;
-      text-align: center;
+    p {
+      font-size: 18px; /* Adjust as needed */
     }
 
     /* Table */
     table {
-      width: 100%;
+      width: 90%;
+      max-width: 1200px;
+      margin: 20px auto;
       border-collapse: collapse;
-      margin-top: 15px;
+      border: 2px solid black;
     }
 
     th, td {
-      padding: 10px;
-      border: 1px solid #fff;
+      padding: 12px;
+      border: 2px solid black;
       text-align: left;
     }
 
     th {
-      background: #333;
+      background: black;
+      color: white;
     }
 
     td {
-      background: #222;
+      background: white;
+      color: black;
     }
 
     /* No Entries Message */
     .no-entries {
-      margin-top: 15px;
       font-size: 1.2rem;
+      margin: 20px;
     }
 
     /* Button */
     button {
+      font-size: 20px;
       margin-top: 15px;
       padding: 10px 15px;
-      color: #fff;
-      background: #000;
+      color: black;
+      background: white;
       font-weight: bold;
-      border: 2px solid #fff;
+      border: 2px solid black;
       border-radius: 30px;
       cursor: pointer;
       transition: 0.3s;
     }
 
     button:hover {
-      color: #000;
-      background: #fff;
+      color: white;
+      background: black;
     }
   </style>
 </head>
 <body>
-  <div id="guestlist" class="guestlist-container">
-    <div class="guestlist">
-      <h2>Guestlist</h2>
-      <p>Below are the messages sent through the guestbook.</p>
+  <h2>GUEST LIST</h2>
+  <p>Below are the messages sent through the form.</p>
 
-      <div v-if="entries.length > 0" class="entries">
-        <table>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Message</th>
-              <th>Date</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="entry in entries" :key="entry.id">
-              <td>{{ entry.name }}</td>
-              <td>{{ entry.email }}</td>
-              <td>{{ entry.message }}</td>
-              <td>{{ formatDate(entry.created_at) }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+  <div id="guestlist">
+    <div v-if="entries.length > 0">
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Message</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="entry in entries" :key="entry.id">
+            <td>{{ entry.name }}</td>
+            <td>{{ entry.email }}</td>
+            <td>{{ entry.message }}</td>
+            <td>{{ formatDate(entry.created_at) }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
-      <div v-else class="no-entries">
-        <p>No messages yet.</p>
-      </div>
-
-      <button onclick="window.location.href='index.html'">Back to Contact Page</button>
+    <div v-else class="no-entries">
+      <p>No messages yet.</p>
     </div>
   </div>
+
+  <button onclick="window.location.href='index.html'">Back to Contact Page</button>
 
   <script>
     const supabase = window.supabase.createClient(

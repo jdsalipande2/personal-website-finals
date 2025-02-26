@@ -49,6 +49,7 @@
 
 <script>
 export default {
+  name: "Guestbook",
   data() {
     return {
       name: '',

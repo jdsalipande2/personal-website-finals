@@ -6,6 +6,7 @@ import router from './router';
 
 // Create and mount the Vue app
 const app = createApp(App);
+app.use(router);
 app.mount('#app');
 
 // Ensure the script runs only after the DOM is ready

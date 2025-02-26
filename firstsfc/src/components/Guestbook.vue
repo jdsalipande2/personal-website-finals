@@ -99,10 +99,10 @@ export default {
 /* Guestbook */
 .guestbook {
   background: #000;
-  padding: 20px;
-  border-radius: 10px;
+  padding: 30px;
+  border-radius: 12px;
   width: 100%;
-  max-width: 500px;
+  max-width: 600px; /* Wider */
   color: white;
   text-align: center;
 }
@@ -111,42 +111,45 @@ export default {
 .guestbook-form input, 
 .guestbook-form textarea {
   font-family: inherit;
-  font-size: inherit;
-  width: calc(100% - 20px); /* Add space */
-  padding: 10px;
-  margin-bottom: 10px;
-  border-radius: 4px;
+  font-size: 1.1rem;
+  width: 100%;
+  padding: 15px;
+  margin-bottom: 15px;
+  border-radius: 6px;
   border: none;
   background: #fff;
   color: #000;
+  box-sizing: border-box; /* Prevents stretching */
 }
 
 /* Buttons */
 .button-group {
   display: flex;
-  justify-content: center;
-  gap: 10px;
+  justify-content: space-between;
+  gap: 15px;
 }
 
 .guestbook-form button {
-  padding: 10px 15px;
+  padding: 15px 20px; /* Bigger buttons */
+  font-size: 1rem; /* Bigger text */
+  font-weight: bold;
+  border-radius: 40px;
+  border: 2px solid #fff;
   color: #fff;
   background: #000;
-  font-weight: bold;
-  border: 2px solid #fff;
-  border-radius: 30px;
   cursor: pointer;
+  flex: 1; /* Make buttons equal width */
   transition: 0.3s;
 }
 
 .guestbook-form button:hover {
-  color: #000;
   background: #fff;
+  color: #000;
 }
 
 /* Thank You Message */
 .thank-you {
   margin-top: 20px;
-  font-size: 1.2rem;
+  font-size: 1.3rem;
 }
 </style>

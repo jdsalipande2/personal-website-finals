@@ -80,7 +80,7 @@ export default {
       }
     },
     viewGuestlist() {
-      window.location.href = '/guestlist'; // Change to actual guestlist page URL
+      this.$router.push('/guestlist');
     }
   }
 };

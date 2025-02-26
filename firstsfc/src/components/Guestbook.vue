@@ -1,10 +1,11 @@
 <template>
   <div class="guestbook-container">
     <div class="guestbook">
-      <h2>Guestbook</h2>
+      <h2>CONTACT ME</h2>
+      <h3>What do you think of my website?</h3>
 
       <!-- Guestbook Form -->
-      <form @submit.prevent="submitForm" class="guestbook-form">
+      <form v-if="!submitted" @submit.prevent="submitForm" class="guestbook-form">
         <input 
           type="text" 
           v-model="name" 
@@ -26,25 +27,22 @@
           required 
           aria-label="Message" 
         ></textarea>
-        <button type="submit">Submit</button>
+        
+        <div class="button-group">
+          <button type="submit">SEND MESSAGE</button>
+          <button type="button" @click="viewGuestlist">VIEW GUESTLIST</button>
+        </div>
       </form>
 
-      <!-- Guestbook Entries -->
-      <div v-if="entries.length > 0" class="entries">
-        <h3>Messages</h3>
-        <ul>
-          <li v-for="entry in entries" :key="entry.id">
-            <strong>{{ entry.name }}</strong> ({{ entry.email }}) - {{ entry.message }} <br />
-            <small>{{ formatDate(entry.created_at) }}</small>
-          </li>
-        </ul>
+      <!-- Thank You Message -->
+      <div v-else class="thank-you">
+        <h3>Thank you for your message!</h3>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-// Supabase Setup
 const supabase = window.supabase.createClient(
   'https://emswahzkravskoohliol.supabase.co', 
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVtc3dhaHprcmF2c2tvb2hsaW9sIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDA1Mzc4OTYsImV4cCI6MjA1NjExMzg5Nn0.DW-8kMWDYoW-eJFI2Elrvf5dEc2DW_g2zhB-FZBXtuU'
@@ -57,7 +55,7 @@ export default {
       name: '',
       email: '',
       message: '',
-      entries: []
+      submitted: false
     };
   },
   methods: {
@@ -67,7 +65,6 @@ export default {
         return;
       }
 
-      // Insert new message into Supabase
       const { error } = await supabase
         .from('guestbook')
         .insert([{ name: this.name, email: this.email, message: this.message }]);
@@ -76,52 +73,34 @@ export default {
         console.error('Error submitting message:', error);
         alert('Something went wrong. Try again.');
       } else {
-        // Refresh guestbook list
-        this.fetchEntries();
-        // Reset form
+        this.submitted = true; // Show thank-you message
         this.name = '';
         this.email = '';
         this.message = '';
       }
     },
-    async fetchEntries() {
-      const { data, error } = await supabase
-        .from('guestbook')
-        .select('*')
-        .order('created_at', { ascending: false });
-
-      if (error) {
-        console.error('Error fetching messages:', error);
-      } else {
-        this.entries = data;
-      }
-    },
-    formatDate(date) {
-      return new Date(date).toLocaleString();
+    viewGuestlist() {
+      window.location.href = '/guestlist'; // Change to actual guestlist page URL
     }
-  },
-  mounted() {
-    this.fetchEntries();
   }
 };
 </script>
 
 <style scoped>
-/* Container Styling */
+/* Container */
 .guestbook-container {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background-color: black;
   padding: 20px;
 }
 
-/* Guestbook Box */
+/* Guestbook */
 .guestbook {
-  background: #222;
+  background: #000;
   padding: 20px;
-  border-radius: 8px;
+  border-radius: 10px;
   width: 100%;
   max-width: 500px;
   color: white;
@@ -131,55 +110,43 @@ export default {
 /* Form Inputs */
 .guestbook-form input, 
 .guestbook-form textarea {
-  width: 100%;
+  font-family: inherit;
+  font-size: inherit;
+  width: calc(100% - 20px); /* Add space */
   padding: 10px;
   margin-bottom: 10px;
   border-radius: 4px;
   border: none;
-  background: #333;
-  color: white;
+  background: #fff;
+  color: #000;
 }
 
-/* Button */
+/* Buttons */
+.button-group {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
 .guestbook-form button {
-  width: 100%;
-  padding: 10px;
-  background: #ffcc00;
-  color: black;
+  padding: 10px 15px;
+  color: #fff;
+  background: #000;
   font-weight: bold;
-  border: none;
-  border-radius: 4px;
+  border: 2px solid #fff;
+  border-radius: 30px;
   cursor: pointer;
   transition: 0.3s;
 }
 
 .guestbook-form button:hover {
-  background: #ffaa00;
+  color: #000;
+  background: #fff;
 }
 
-/* Guestbook Entries */
-.entries {
+/* Thank You Message */
+.thank-you {
   margin-top: 20px;
-  text-align: left;
-}
-
-.entries h3 {
-  margin-bottom: 10px;
-}
-
-.entries ul {
-  list-style: none;
-  padding: 0;
-}
-
-.entries li {
-  background: #333;
-  padding: 10px;
-  border-radius: 4px;
-  margin-bottom: 10px;
-}
-
-.entries small {
-  color: #bbb;
+  font-size: 1.2rem;
 }
 </style>

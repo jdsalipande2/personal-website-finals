@@ -1,6 +1,6 @@
 <template>
   <div class="fade-in">
-    <section class="services">
+    <section id="services" class="services">
       <h2>Services</h2>
       <div class="service-grid">
         <div

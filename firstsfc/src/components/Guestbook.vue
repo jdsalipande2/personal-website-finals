@@ -1,4 +1,6 @@
 <template>
+  <div class="fade-in"> 
+  <section class="contact" id="contact">
   <div class="guestbook-container">
     <div class="guestbook">
       <h2>CONTACT ME</h2>
@@ -39,6 +41,8 @@
         <h3>Thank you for your message!</h3>
       </div>
     </div>
+  </div>
+  </section>
   </div>
 </template>
 

@@ -47,11 +47,6 @@
 </template>
 
 <script>
-const supabase = window.supabase.createClient(
-  'https://emswahzkravskoohliol.supabase.co', 
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVtc3dhaHprcmF2c2tvb2hsaW9sIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDA1Mzc4OTYsImV4cCI6MjA1NjExMzg5Nn0.DW-8kMWDYoW-eJFI2Elrvf5dEc2DW_g2zhB-FZBXtuU'
-);
-
 export default {
   name: 'Guestbook',
   data() {
@@ -59,7 +54,9 @@ export default {
       name: '',
       email: '',
       message: '',
-      submitted: false
+      submitted: false,
+      guestbookEntries: [], // Store guestbook data
+      newEntry: { name: '', message: '' }, // For Flask API
     };
   },
   methods: {
@@ -69,6 +66,11 @@ export default {
         return;
       }
 
+      const supabase = window.supabase.createClient(
+        'https://emswahzkravskoohliol.supabase.co',
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVtc3dhaHprcmF2c2tvb2hsaW9sIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDA1Mzc4OTYsImV4cCI6MjA1NjExMzg5Nn0.DW-8kMWDYoW-eJFI2Elrvf5dEc2DW_g2zhB-FZBXtuU'
+      );
+
       const { error } = await supabase
         .from('guestbook')
         .insert([{ name: this.name, email: this.email, message: this.message }]);
@@ -77,16 +79,46 @@ export default {
         console.error('Error submitting message:', error);
         alert('Something went wrong. Try again.');
       } else {
-        this.submitted = true; // Show thank-you message
+        this.submitted = true;
         this.name = '';
         this.email = '';
         this.message = '';
       }
     },
+
+    // Fetch guestbook from Flask API
+    async fetchGuestbook() {
+      try {
+        const response = await fetch("https://jdsalipande.pythonanywhere.com/guestbook");
+        this.guestbookEntries = await response.json();
+      } catch (error) {
+        console.error("Error fetching guestbook:", error);
+      }
+    },
+
+    // Add guest to Flask API
+    async addGuest() {
+      try {
+        await fetch("https://jdsalipande.pythonanywhere.com/guestbook", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(this.newEntry),
+        });
+
+        this.newEntry = { name: "", message: "" }; // Reset input fields
+        this.fetchGuestbook(); // Refresh list
+      } catch (error) {
+        console.error("Error adding guest:", error);
+      }
+    },
+
     viewGuestlist() {
       window.location.href = 'guestlist.html';
-    }
-  }
+    },
+  },
+  mounted() {
+    this.fetchGuestbook();
+  },
 };
 </script>
 
